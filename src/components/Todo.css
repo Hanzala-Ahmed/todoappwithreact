@@ -1,0 +1,187 @@
+*{
+    margin: 0%;
+    padding: 0%;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #34495E;
+}
+
+.mainBox {
+    background-color: #34495E;
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0px;
+    color: aliceblue;
+}
+
+.mainBox1 {
+    /* background-color: red; */
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0px;
+    color: aliceblue;
+}
+
+.getInput {
+    /* background-color: blue; */
+    width: 80%;
+    height: 100px;
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.getInput input {
+    width: 300px;
+    height: 40px;
+    outline: 4px black;
+    border: 1px black;
+    padding: 0px 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    margin: 0px 10px;
+}
+
+.getInput input::placeholder {
+    font-weight: bold;
+}
+
+.getInput .noteBtn {
+    background-color: #2ECC71;
+    color: whitesmoke;
+    width: 100px;
+    height: 40px;
+    margin: 0px 10px;
+    border-radius: 8px;
+    border: none;
+    outline: whitesmoke;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.getInput .deltAllBtn {
+    background-color: #C0392B;
+    color: whitesmoke;
+    width: 100px;
+    height: 40px;
+    margin: 0px 10px;
+    border-radius: 8px;
+    border: none;
+    outline: whitesmoke;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.mainBox2 {
+    /* background-color: black; */
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 30px;
+    color: aliceblue;
+    margin-top: 10px;
+}
+
+.buttons {
+    /* background-color: #2ECC71; */
+    height: fit-content;
+    width: 100%;
+    padding: 20px 0px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.buttons button {
+    background-color: #2ECC71;
+    color: whitesmoke;
+    width: 100px;
+    height: 40px;
+    margin: 0px 10px;
+    border-radius: 8px;
+    border: none;
+    outline: whitesmoke;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.list {
+    background-color: whitesmoke;
+    width: 300px;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #34495E;
+    border-radius: 6px;
+    margin: 20px 20px;
+}
+
+.listValue {
+    /* background-color: #34495E; */
+    height: fit-content;
+    width: 100%;
+    padding: 10px 10px;
+    word-wrap: break-word;
+}
+
+.edit {
+    background-color: whitesmoke;
+    width: 300px;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #34495E;
+    border-radius: 6px;
+    margin: 20px 20px;
+}
+
+.editValue {
+    background-color: whitesmoke;
+    outline: none;
+    border: none;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    height: fit-content;
+    width: 100%;
+    padding: 10px 10px;
+    word-wrap: break-word;
+}
+
+.EditValuebuttons {
+    /* background-color: #2ECC71; */
+    height: fit-content;
+    width: 100%;
+    padding: 20px 0px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.EditValuebuttons button {
+    background-color: #2ECC71;
+    color: whitesmoke;
+    width: 100px;
+    height: 40px;
+    margin: 0px 10px;
+    border-radius: 8px;
+    border: none;
+    outline: whitesmoke;
+    font-weight: bold;
+    cursor: pointer;
+}
