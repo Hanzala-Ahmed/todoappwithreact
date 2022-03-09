@@ -1,17 +1,36 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Todo.css";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
+import db from "../firebase";
 
 const Todo = () => {
   const [todo, setTodo] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const [indexValue, setIndexValue] = useState("");
   const [editInputValue, setEditInputValue] = useState("");
+  const [editableForm, setEditableForm] = useState(false);
+  const [editItemId, setEditItemId] = useState("");
 
   const addtodo = () => {
-    console.log(inputValue);
-    todo.push(inputValue);
-    setTodo([...todo]);
-    todo(" ")
+    if (inputValue.length > 3) {
+      // console.log(inputValue);
+      todo.push(inputValue);
+      setTodo([...todo]);
+      setInputValue("");
+      // console.log([db]);
+    } else {
+      alert("First you need to enter any task");
+      // console.log(inputValue);
+    }
   };
 
   const deleteAll = () => {
@@ -19,25 +38,103 @@ const Todo = () => {
   };
 
   const deleteTodo = (ind) => {
-    console.log("hello", ind);
+    // console.log("hello", ind);
     todo.splice(ind, 1);
     setTodo([...todo]);
   };
 
-  const editTodo = (ind) => {
-    console.log("edit",editInputValue);
-    setIndexValue(ind);
-    setEditInputValue(todo[ind])
+  const editTodo = (id, note) => {
+    setEditItemId(id);
+    setInputValue(note);
+    setEditableForm(true);
   };
 
   const updateValue = () => {
-    console.log(editInputValue);
+    // console.log(editInputValue);
     todo.splice(indexValue, 1, editInputValue);
     setTodo([...todo]);
     setIndexValue("");
     setEditInputValue("");
   };
-  console.log("todo", todo);
+  // console.log("todo", todo);
+
+  // add data in firebase
+
+  const addData = async () => {
+    if(inputValue.length < 1){
+      return
+    }
+
+    await addDoc(collection(db, "Note"), {
+      notes: inputValue,
+    })
+      .then(() => {
+        console.log("data added");
+        setInputValue("");
+        getData();
+      })
+      .catch((error) => {
+        console.log("eror", error);
+      });
+  };
+
+  // get data from firebase
+
+  const getData = async () => {
+    let note = [];
+    const querySnapshot = await getDocs(collection(db, "Note"));
+    querySnapshot.forEach((doc) => {
+      note.push({
+        id: doc.id,
+        notes: doc.data().notes,
+      });
+    });
+    setTodo(note);
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const editData = async () => {
+    if(inputValue.length < 1){
+      return
+    }
+
+    await updateDoc(doc(db, "Note", editItemId), {
+      notes: inputValue,
+    })
+      .then(() => {
+        onCancel();
+        getData();
+        console.log("Item Edited Successfully");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const onCancel = () => {
+    setInputValue("");
+    setEditableForm(false);
+  };
+
+  const deleteData = async (id) => {
+    await deleteDoc(doc(db, "Note", id))
+      .then(() => {
+        console.log("delete note");
+        getData();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const deleteAllData = () => {
+    todo.forEach(val => {
+      deleteData(val.id)
+    })
+  }
 
   return (
     <>
@@ -49,38 +146,42 @@ const Todo = () => {
               type="text"
               placeholder="Take a Note"
               onChange={(e) => setInputValue(e.target.value)}
+              value={inputValue}
             />
-            <button className="noteBtn" onClick={addtodo}>
-              Add Task
-            </button>
-            <button className="deltAllBtn" onClick={deleteAll}>
-              Delete All
-            </button>
+            {editableForm ? (
+              <>
+                <button className="noteBtn" onClick={editData}>
+                  Edit Task
+                </button>
+                <button className="deltAllBtn" onClick={onCancel}>
+                  Cancel
+                </button>
+              </>
+            ) : (
+              <>
+                <button className="noteBtn" onClick={addData}>
+                  Add Task
+                </button>
+                <button className="deltAllBtn" onClick={deleteAllData}>
+                  Delete All
+                </button>
+              </>
+            )}
           </div>
         </div>
 
         <div className="mainBox2">
-          {todo.map((value, index, array) => {
-            return index === indexValue ? (
-              <>
-              <div key={index} className="edit">
-                  <input className="editValue" onChange={(e) => setEditInputValue(e.target.value)} value={editInputValue}/>
-                  <div className="EditValuebuttons">
-                    <button onClick={updateValue}>Update</button>
-                  </div>
-                </div></>
-            ) : (
-              <>
-                <div key={index} className="list">
-                  <div className="listValue">
-                      {value}
-                  </div>
-                  <div className="buttons">
-                    <button onClick={() => editTodo(index)}>Edit</button>
-                    <button onClick={() => deleteTodo(index)}>Delete</button>
-                  </div>
+          {todo.map((value, index) => {
+            return (
+              <div className="list" key={value.id}>
+                <div className="listValue">{value.notes}</div>
+                <div className="buttons">
+                  <button onClick={() => editTodo(value.id, value.notes)}>
+                    Edit
+                  </button>
+                  <button onClick={() => deleteData(value.id)}>Delete</button>
                 </div>
-              </>
+              </div>
             );
           })}
         </div>
